@@ -29,9 +29,18 @@ public class Drive extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        double left = -leftJoystick.getY() + rightJoystick.getX();
-        double right = -leftJoystick.getY() - rightJoystick.getX();
-        drivetrain.set(left, right);
+        //double left = -leftJoystick.getY() + rightJoystick.getX();
+        // double right = -leftJoystick.getY() - rightJoystick.getX();
+
+
+        // double left = leftJoystick.getZ();
+
+        double dial = (-leftJoystick.getZ() + 1) / 2;
+        double set = -leftJoystick.getY() * dial;
+
+        System.out.println(set);
+
+        drivetrain.set(set, 0);
     }
 
     // Called once the command ends or is interrupted.

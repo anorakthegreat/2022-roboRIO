@@ -28,7 +28,7 @@ public final class Constants {
                 public static final boolean SENSOR_PHASE = false;
                 public static final double PEAK_OUTPUT_FORWARD = 1;
                 public static final double PEAK_OUTPUT_REVERSE = -1;
-                public static final NeutralMode NEUTRAL_MODE = NeutralMode.Coast;
+                public static final NeutralMode NEUTRAL_MODE = NeutralMode.Brake;
             }
 
             public static final class LeftFollower {
