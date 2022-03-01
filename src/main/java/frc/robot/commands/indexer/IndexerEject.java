@@ -20,14 +20,15 @@ public class IndexerEject extends CommandBase {
 
     // Called when the command is initially scheduled.
     @Override
-    public void initialize() {}
+    public void initialize() {
+        indexer.runMotorOne(IndexerMotionParameters.STAGE_ONE_PERCENT_OUTPUT_BACKWARD);
+        indexer.runMotorTwo(IndexerMotionParameters.STAGE_TWO_PERCENT_OUTPUT_BACKWARD);  
+
+    }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
-    public void execute() {
-        indexer.runMotorOne(IndexerMotionParameters.STAGE_ONE_PERCENT_OUTPUT_BACKWARD);
-        indexer.runMotorTwo(IndexerMotionParameters.STAGE_TWO_PERCENT_OUTPUT_BACKWARD);  
-    }
+    public void execute() {    }
 
     // Called once the command ends or is interrupted.
     @Override

@@ -10,9 +10,6 @@ import frc.robot.subsystems.Indexer;
 
 public class IndexerFeed extends CommandBase {
     private Indexer indexer;
-    private boolean wasFalse;
-    private boolean done = false;
-    private boolean shouldCheckRefill;
 
     /** Creates a new IndexerFeed. */
     public IndexerFeed(Indexer indexer) {
@@ -25,10 +22,9 @@ public class IndexerFeed extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        wasFalse = false;
-        done = false;
+        indexer.runMotorOne(IndexerMotionParameters.STAGE_ONE_PERCENT_OUTPUT_FORWARD);
+        indexer.runMotorTwo(IndexerMotionParameters.STAGE_TWO_PERCENT_OUTPUT_FORWARD);
 
-        shouldCheckRefill = indexer.getSensorOne() && indexer.getSensorTwo();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -36,8 +32,6 @@ public class IndexerFeed extends CommandBase {
     public void execute() {
        
 
-            indexer.runMotorOne(IndexerMotionParameters.STAGE_ONE_PERCENT_OUTPUT_FORWARD);
-            indexer.runMotorTwo(IndexerMotionParameters.STAGE_TWO_PERCENT_OUTPUT_FORWARD);
 
     }
         
