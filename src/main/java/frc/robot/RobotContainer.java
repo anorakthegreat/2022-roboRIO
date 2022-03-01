@@ -95,7 +95,7 @@ public class RobotContainer {
         alignButton.whileHeld(alignCommand);
         indexerIntakeButton.whileHeld(intakeCommand);
         ejectButton.whileHeld(ejectCommand);
-        feedButton.whenPressed(feedCommand);
+        feedButton.whileHeld(feedCommand);
         climberControlButton.whenPressed(climberControl);
         //controlBallButton.whileHeld(controlBall);
     }

@@ -51,7 +51,7 @@ public class IndexerIntake extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         indexer.runMotorOne(0);
-        indexer.runMotorTwo(0);
+        indexer.runMotorTwo(0);  
     }
 
     // Returns true when the command should end.

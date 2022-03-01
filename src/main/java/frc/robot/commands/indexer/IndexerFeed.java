@@ -4,7 +4,7 @@
 
 package frc.robot.commands.indexer;
 
-import static frc.robot.Constants.IndexerConstants.IndexerMotionParameters.*;
+import frc.robot.Constants.IndexerConstants.*;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Indexer;
 
@@ -34,27 +34,11 @@ public class IndexerFeed extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (shouldCheckRefill) {
-            if (indexer.getSensorTwo() && wasFalse) {
-                shouldCheckRefill = false;
-                return;
-            }
+       
 
-            indexer.runMotorOne(STAGE_ONE_PERCENT_OUTPUT_FORWARD);
-            indexer.runMotorTwo(STAGE_TWO_PERCENT_OUTPUT_FORWARD);
+            indexer.runMotorOne(IndexerMotionParameters.STAGE_ONE_PERCENT_OUTPUT_FORWARD);
+            indexer.runMotorTwo(IndexerMotionParameters.STAGE_TWO_PERCENT_OUTPUT_FORWARD);
 
-            if (!indexer.getSensorTwo()) {
-                wasFalse = true;
-            }
-        } else {
-            if (!indexer.getSensorTwo()) {
-                done = true;
-                return;
-            }
-
-            indexer.runMotorOne(STAGE_ONE_PERCENT_OUTPUT_FORWARD);
-            indexer.runMotorTwo(STAGE_TWO_PERCENT_OUTPUT_FORWARD);
-        }
     }
         
     
@@ -63,12 +47,12 @@ public class IndexerFeed extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         indexer.runMotorOne(0);
-        indexer.runMotorTwo(0);
+        indexer.runMotorTwo(0);  
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return done;
+        return false;
     }
 }
