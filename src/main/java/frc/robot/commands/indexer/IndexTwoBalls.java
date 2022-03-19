@@ -6,8 +6,6 @@ package frc.robot.commands.indexer;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Indexer;
-import frc.robot.subsystems.Intake;
-import frc.robot.commands.indexer.BetterIndexerIntake;
 
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more

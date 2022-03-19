@@ -4,18 +4,13 @@
 
 package frc.robot;
 
-import javax.sql.rowset.spi.SyncProvider;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -48,7 +43,7 @@ public class RobotContainer {
     // OI Devices
     private final Joystick leftJoystick = new Joystick(0);
     private final Joystick rightJoystick = new Joystick(1);
-    private final Joystick gamepad = new Joystick(2);
+    // private final Joystick gamepad = new Joystick(2);
     //private final JoystickButton indexButton = new JoystickButton(leftJoystick, 1);
     private final Joystick buttonBoard = new Joystick(3);
     private final JoystickButton turboButton = new JoystickButton(rightJoystick, 1);
