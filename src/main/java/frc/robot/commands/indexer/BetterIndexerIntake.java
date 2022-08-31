@@ -12,7 +12,7 @@ import frc.robot.subsystems.Intake;
 public class BetterIndexerIntake extends CommandBase {
     private Indexer indexer;
     private boolean sensorTwo = false;
-    private boolean done = false;
+    private boolean done = false;   
 
     /** Creates a new BetterIndexerIntake. */
     public BetterIndexerIntake(Indexer indexer2) {
