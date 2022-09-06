@@ -2,188 +2,55 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.Subsystems;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.FRCLib.Motors.FRCTalonFX;
 
-
 public class Drivetrain extends SubsystemBase {
-    private FRCTalonFX leftMaster, leftFollower, rightMaster, rightFollower;
-    private double leftSetpoint, rightSetpoint;
-    
-    /** Creates a new Drivetrain. */
-    public Drivetrain() {
-        leftMaster = new FRCTalonFX.FRCTalonFXBuilder(Constants.DrivetrainConstants.DrivetrainMotors.LeftMaster.CAN_ID)
-            .withKP(Constants.DrivetrainConstants.DrivetrainMotors.LeftMaster.KP)
-            .withKI(Constants.DrivetrainConstants.DrivetrainMotors.LeftMaster.KI)
-            .withKD(Constants.DrivetrainConstants.DrivetrainMotors.LeftMaster.KD)
-            .withKF(Constants.DrivetrainConstants.DrivetrainMotors.LeftMaster.KF)
-            .withInverted(Constants.DrivetrainConstants.DrivetrainMotors.LeftMaster.INVERTED)
-            .withSensorPhase(Constants.DrivetrainConstants.DrivetrainMotors.LeftMaster.SENSOR_PHASE)
-            .withPeakOutputForward(Constants.DrivetrainConstants.DrivetrainMotors.LeftMaster.PEAK_OUTPUT_FORWARD)
-            .withPeakOutputReverse(Constants.DrivetrainConstants.DrivetrainMotors.LeftMaster.PEAK_OUTPUT_REVERSE)
-            //.withNeutralMode(Constants.DrivetrainConstants.DrivetrainMotors.LeftMaster.NEUTRAL_MODE)
-            .build();
-
-        leftFollower = new FRCTalonFX.FRCTalonFXBuilder(Constants.DrivetrainConstants.DrivetrainMotors.LeftFollower.CAN_ID)
-            .withKP(Constants.DrivetrainConstants.DrivetrainMotors.LeftFollower.KP)
-            .withKI(Constants.DrivetrainConstants.DrivetrainMotors.LeftFollower.KI)
-            .withKD(Constants.DrivetrainConstants.DrivetrainMotors.LeftFollower.KD)
-            .withKF(Constants.DrivetrainConstants.DrivetrainMotors.LeftFollower.KF)
-            .withInverted(Constants.DrivetrainConstants.DrivetrainMotors.LeftFollower.INVERTED)
-            .withSensorPhase(Constants.DrivetrainConstants.DrivetrainMotors.LeftFollower.SENSOR_PHASE)
-            .withPeakOutputForward(Constants.DrivetrainConstants.DrivetrainMotors.LeftFollower.PEAK_OUTPUT_FORWARD)
-            .withPeakOutputReverse(Constants.DrivetrainConstants.DrivetrainMotors.LeftFollower.PEAK_OUTPUT_REVERSE)
-            //.withNeutralMode(Constants.DrivetrainConstants.DrivetrainMotors.LeftFollower.NEUTRAL_MODE)
-            .withMaster(leftMaster).build();
-
-        rightMaster = new FRCTalonFX.FRCTalonFXBuilder(Constants.DrivetrainConstants.DrivetrainMotors.RightMaster.CAN_ID)
-            .withKP(Constants.DrivetrainConstants.DrivetrainMotors.RightMaster.KP)
-            .withKI(Constants.DrivetrainConstants.DrivetrainMotors.RightMaster.KI)
-            .withKD(Constants.DrivetrainConstants.DrivetrainMotors.RightMaster.KD)
-            .withKF(Constants.DrivetrainConstants.DrivetrainMotors.RightMaster.KF)
-            .withInverted(Constants.DrivetrainConstants.DrivetrainMotors.RightMaster.INVERTED)
-            .withSensorPhase(Constants.DrivetrainConstants.DrivetrainMotors.RightMaster.SENSOR_PHASE)
-            .withPeakOutputForward(Constants.DrivetrainConstants.DrivetrainMotors.RightMaster.PEAK_OUTPUT_FORWARD)
-            .withPeakOutputReverse(Constants.DrivetrainConstants.DrivetrainMotors.RightMaster.PEAK_OUTPUT_REVERSE)
-            //.withNeutralMode(Constants.DrivetrainConstants.DrivetrainMotors.RightMaster.NEUTRAL_MODE)
-            .build();
-
-        rightFollower = new FRCTalonFX.FRCTalonFXBuilder(Constants.DrivetrainConstants.DrivetrainMotors.RightFollower.CAN_ID)
-            .withKP(Constants.DrivetrainConstants.DrivetrainMotors.RightFollower.KP)
-            .withKI(Constants.DrivetrainConstants.DrivetrainMotors.RightFollower.KI)
-            .withKD(Constants.DrivetrainConstants.DrivetrainMotors.RightFollower.KD)
-            .withKF(Constants.DrivetrainConstants.DrivetrainMotors.RightFollower.KF)
-            .withInverted(Constants.DrivetrainConstants.DrivetrainMotors.RightFollower.INVERTED)
-            .withSensorPhase(Constants.DrivetrainConstants.DrivetrainMotors.RightFollower.SENSOR_PHASE)
-            .withPeakOutputForward(Constants.DrivetrainConstants.DrivetrainMotors.RightFollower.PEAK_OUTPUT_FORWARD)
-            .withPeakOutputReverse(Constants.DrivetrainConstants.DrivetrainMotors.RightFollower.PEAK_OUTPUT_REVERSE)
-            // .withNeutralMode(Constants.DrivetrainConstants.DrivetrainMotors.RightFollower.NEUTRAL_MODE)
-            .withMaster(rightMaster).build();
-
-        addChild("drivetrainLeftMaster", leftMaster);
-        addChild("drivetrainRightMaster", rightMaster);
-        addChild("drivetrainLeftFollower", leftFollower);
-        addChild("drivetrainRightFollower", rightFollower);
-    }
-
-    public void driveWithError(double left, double right, double expectedStop) {
-        // expectedStop = Math.abs(getCurrentEncoderPosition())-expectedStop;
-        if(left>=0&&getCurrentEncoderPosition()<expectedStop){
-            left = left + Math.abs(((Math.abs(expectedStop)-(Math.abs(getCurrentEncoderPosition())))*Constants.DrivetrainConstants.DrivetrainControls.ERROR_ADJUSTMENT_DRIVE));
-            //System.out.println("da value    " + Math.abs(((Math.abs(expectedStop)-(Math.abs(getCurrentEncoderPosition())))*Constants.DrivetrainConstants.DrivetrainControls.ERROR_ADJUSTMENT_DRIVE)));
-        }
-        else if(left<0&&getCurrentEncoderPosition()>expectedStop){
-            left = left - Math.abs(((Math.abs(expectedStop)-(Math.abs(getCurrentEncoderPosition())))*Constants.DrivetrainConstants.DrivetrainControls.ERROR_ADJUSTMENT_DRIVE));
-            //System.out.println("da value    " + - Math.abs(((Math.abs(expectedStop)-(Math.abs(getCurrentEncoderPosition())))*Constants.DrivetrainConstants.DrivetrainControls.ERROR_ADJUSTMENT_DRIVE)));
-        }
-        if(right>=0&&getCurrentEncoderPosition()<expectedStop){
-            right = right + Math.abs(((Math.abs(expectedStop)-(Math.abs(getCurrentEncoderPosition())))*Constants.DrivetrainConstants.DrivetrainControls.ERROR_ADJUSTMENT_DRIVE));
-        }
-        else if(right<0&&getCurrentEncoderPosition()>expectedStop){
-            right = right - Math.abs(((Math.abs(expectedStop)-(Math.abs(getCurrentEncoderPosition())))*Constants.DrivetrainConstants.DrivetrainControls.ERROR_ADJUSTMENT_DRIVE));
-        }
-
-        driveWithoutRamp(left, right);
-        System.out.println("left:right    " + left + " : " + right);
-    }
-
-    public void driveWithoutRamp(double left, double right) {
-        this.leftMaster.drivePercentOutput(left);
-        this.rightMaster.drivePercentOutput(right);
-        this.leftSetpoint = left;
-        this.rightSetpoint = right;
-    }
-
-    public void driveWithRamp(double left, double right) {
-        double rampLeft = ramp(left, leftSetpoint);
-        double rampRight = ramp(right, rightSetpoint);
-
-        this.leftMaster.drivePercentOutput(rampLeft);
-        this.rightMaster.drivePercentOutput(rampRight);
-        this.leftSetpoint = rampLeft;
-        this.rightSetpoint = rampRight;
-    }
-
-    private double ramp(double input, double currentSpeed) {
-        double dv = input - currentSpeed;
-        if (dv > 0) {
-            // forwards, speeding up
-            if (dv > Constants.DrivetrainConstants.DrivetrainControls.RAMP_LIMIT) {
-                return currentSpeed + Constants.DrivetrainConstants.DrivetrainControls.RAMP_LIMIT;
-            }
-        } else if (dv < 0) {
-            // forwards, slowing down
-            if (dv < -Constants.DrivetrainConstants.DrivetrainControls.RAMP_LIMIT) {
-                return currentSpeed - Constants.DrivetrainConstants.DrivetrainControls.RAMP_LIMIT;
-            }
-        }
-        return input;
-    }
-
-      public double getCurrentEncoderPosition() {
-        return (leftMaster.getSelectedSensorPosition()+rightMaster.getSelectedSensorPosition())/2;
-    }
-
-    public double getLeft(){
-        return leftMaster.getSelectedSensorPosition();
-    }
-
-    public double getRight(){
-        return rightMaster.getSelectedSensorPosition();
-    }
-
-      public void zeroCurrentPosition() {
-        leftMaster.motor.setSelectedSensorPosition(0);
-        leftFollower.motor.setSelectedSensorPosition(0);
-        rightMaster.motor.setSelectedSensorPosition(0);
-        rightFollower.motor.setSelectedSensorPosition(0);
-    }
-
-    public void setBrakeMode(boolean status){
-        if(status){
-            leftMaster.motor.setNeutralMode(NeutralMode.Brake);
-            leftFollower.motor.setNeutralMode(NeutralMode.Brake);
-            rightMaster.motor.setNeutralMode(NeutralMode.Brake);
-            rightFollower.motor.setNeutralMode(NeutralMode.Brake);
-            System.out.println("brake");
-        }else{
-            leftMaster.motor.setNeutralMode(NeutralMode.Coast);
-            leftFollower.motor.setNeutralMode(NeutralMode.Coast);
-            rightMaster.motor.setNeutralMode(NeutralMode.Coast);
-            rightFollower.motor.setNeutralMode(NeutralMode.Coast);
-            System.out.println("coast");
-        }
-    }
+  /** Creates a new Drivetrain. */
+  private FRCTalonFX left, right;
 
 
-    @Override
-    public void periodic() {
-    
-        // SmartDashboard.putNumber("drivetrain average encoder value", getCurrentEncoderPosition());
-        // This method will be called once per scheduler run
-        // SmartDashboard.putBoolean("allign sensor starboard", getSensorRight());
-        // SmartDashboard.putBoolean("allign sensor port", getSensorLeft());
-        // if(this.getCurrentCommand()!=null)SmartDashboard.putString("drivetrain command", this.getCurrentCommand().getName());
-        // SmartDashboard.putNumber("drivetrain average encoder value", getCurrentEncoderPosition());
-        // SmartDashboard.putString("drivetrain brake mode", rightFollower.getNeutralMode().toString());
-        //SmartDashboard.putNumber("left motor", leftMaster.get)
-    }
+  public Drivetrain() {
+    left = new FRCTalonFX.FRCTalonFXBuilder(Constants.DrivetrainConstants.DrivetrainMotors.left.CAN_ID)
+    .withKP(Constants.DrivetrainConstants.DrivetrainMotors.left.KP)
+    .withKI(Constants.DrivetrainConstants.DrivetrainMotors.left.KI)
+    .withKD(Constants.DrivetrainConstants.DrivetrainMotors.left.KD)
+    .withKF(Constants.DrivetrainConstants.DrivetrainMotors.left.KF)
+    .withInverted(Constants.DrivetrainConstants.DrivetrainMotors.left.INVERTED)
+    .withSensorPhase(Constants.DrivetrainConstants.DrivetrainMotors.left.SENSOR_PHASE)
+    .withPeakOutputForward(Constants.DrivetrainConstants.DrivetrainMotors.left.PEAK_OUTPUT_FORWARD)
+    .withPeakOutputReverse(Constants.DrivetrainConstants.DrivetrainMotors.left.PEAK_OUTPUT_REVERSE)
+    //.withNeutralMode(Constants.DrivetrainConstants.DrivetrainMotors.LeftMaster.NEUTRAL_MODE)
+    .build();
 
-    public boolean getAutoEnd(int distance) {
-        return getCurrentEncoderPosition() <= distance;
-    }
-    
-    public boolean getAutoEnd() {
-        return getCurrentEncoderPosition() <= -100000;
-    }
+    right = new FRCTalonFX.FRCTalonFXBuilder(Constants.DrivetrainConstants.DrivetrainMotors.right.CAN_ID)
+    .withKP(Constants.DrivetrainConstants.DrivetrainMotors.right.KP)
+    .withKI(Constants.DrivetrainConstants.DrivetrainMotors.right.KI)
+    .withKD(Constants.DrivetrainConstants.DrivetrainMotors.right.KD)
+    .withKF(Constants.DrivetrainConstants.DrivetrainMotors.right.KF)
+    .withInverted(Constants.DrivetrainConstants.DrivetrainMotors.right.INVERTED)
+    .withSensorPhase(Constants.DrivetrainConstants.DrivetrainMotors.right.SENSOR_PHASE)
+    .withPeakOutputForward(Constants.DrivetrainConstants.DrivetrainMotors.right.PEAK_OUTPUT_FORWARD)
+    .withPeakOutputReverse(Constants.DrivetrainConstants.DrivetrainMotors.right.PEAK_OUTPUT_REVERSE)
+    //.withNeutralMode(Constants.DrivetrainConstants.DrivetrainMotors.LeftMaster.NEUTRAL_MODE)
+    .build();
 
-    public boolean getAutoEndHighReverse() {
-        return getCurrentEncoderPosition() <= Constants.DrivetrainConstants.Autonomous.Distance.HIGH_GOAL_SHOT;
-    }
+    addChild("left", left);
+    addChild("right", right);
+
+  }
+
+  public void drive(double left, double right){
+    this.right.drivePercentOutput(left);
+    this.left.drivePercentOutput(right);
+
+  }
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+  }
 }
