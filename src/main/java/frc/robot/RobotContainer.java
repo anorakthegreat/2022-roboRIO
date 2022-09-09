@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Commands.Drive;
+import frc.robot.Commands.DriveTiny;
 import frc.robot.Subsystems.Drivetrain;
 
 /**
@@ -23,15 +24,20 @@ import frc.robot.Subsystems.Drivetrain;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   Drivetrain drivetrain = new Drivetrain();
+  XboxController xboxController = new XboxController(2);
+
   
   Joystick leftJoystick = new Joystick(0);
   Joystick rightJoystick = new Joystick(1);
 
   Drive driveCommand = new Drive(drivetrain, leftJoystick, rightJoystick);
+  DriveTiny tinyDriveCommand = new DriveTiny(drivetrain, xboxController);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    drivetrain.setDefaultCommand(driveCommand);
+    //drivetrain.setDefaultCommand(driveCommand);
+    drivetrain.setDefaultCommand(tinyDriveCommand);
+
 
     // Configure the button bindings
     configureButtonBindings();
