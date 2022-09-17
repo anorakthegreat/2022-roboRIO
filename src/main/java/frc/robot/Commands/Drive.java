@@ -29,10 +29,10 @@ public class Drive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double left = -leftJoystick.getY() - rightJoystick.getX();
-    double right = -leftJoystick.getY() + rightJoystick.getX();
-
-    dr.drive((left), (right));
+    double left = -leftJoystick.getX() + rightJoystick.getY();
+    double right = -leftJoystick.getX() - rightJoystick.getY();
+    double limiter = ((leftJoystick.getZ()+1)/2);
+    dr.drive((right*limiter), (left*limiter));
 
     
 

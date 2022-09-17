@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import javax.swing.plaf.basic.BasicSplitPaneUI.KeyboardDownRightHandler;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -36,7 +34,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     //drivetrain.setDefaultCommand(driveCommand);
-    drivetrain.setDefaultCommand(tinyDriveCommand);
+    drivetrain.setDefaultCommand(driveCommand);
 
 
     // Configure the button bindings
